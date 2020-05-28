@@ -40,12 +40,11 @@ function formSubmitted(event) {
 
     let inputs = document.querySelectorAll('#launchForm > form > div > label > input[type=text]');
 
-    for (let input of inputs) {
+    for (let input of inputs)
         if (input.value === '') {
             alert('All fields are required.');
             return;
         }
-    }
 
     if (destination.value === '') {
         alert('Please select a destination');
@@ -57,35 +56,43 @@ function formSubmitted(event) {
     if (isNotANumber('#launchForm > form > div:nth-child(3) > label > input[type=text]')) return;
     if (isNotANumber('#launchForm > form > div:nth-child(4) > label > input[type=text]')) return;
 
+    let pilotText = document.querySelector('#launchForm > form > div:nth-child(1) > label > input[type=text]').value + ' is ready.';
+    let copilotText = document.querySelector('#launchForm > form > div:nth-child(2) > label > input[type=text]').value + ' is ready.';
+    let cargoText = 'There is too much mass to take off.';
+    let fuelText = 'Not enough fuel for the journey.';
+    let launchStatusText = 'Shuttle not ready for launch.';
+
     let fuel = Number(document.querySelector('#launchForm > form > div:nth-child(3) > label > input[type = text]').value);
     let cargo = Number(document.querySelector('#launchForm > form > div:nth-child(4) > label > input[type = text]').value);
 
-    if (fuel < minFuel) {
-        fuelStatus.textContent = 'Not enough fuel for the journey.';
-    }
-    else {
-        fuelStatus.textContent = 'Fuel level high enough for launch';
-    }
+    if (fuel > minFuel) fuelText =
+        'Fuel level high enough for launch.';
+    
+    if (cargo < maxCargo) cargoText =
+        'Cargo mass low enough for launch.';
 
-    if (cargo > maxCargo) {
-        cargoStatus.textContent = 'There is too much mass to take off.';
-    }
-    else {
-        cargoStatus.textContent = 'Cargo mass low enough for launch.';
-    }
+    if (fuel > minFuel && cargo < maxCargo)
+        launchStatusText = 'Shuttle is ready for launch.';
+
+    launchStatusCheck.innerHTML = `<h2 id="launchStatus">${launchStatusText}</h2>
+                                <div id="faultyItems">
+                                    <ol>
+                                        <li id="pilotStatus">${pilotText}</li>
+                                        <li id="copilotStatus">${copilotText}</li>
+                                        <li id="fuelStatus">${fuelText}</li>
+                                        <li id="cargoStatus">${cargoText}</li>
+                                    </ol>
+                                </div>`;
 
     if (fuel > minFuel && cargo < maxCargo) {
-        launchStatus.textContent = 'Shuttle is ready for launch.';
+        faultyItems.style.visibility = 'hidden';
         launchStatus.style.color = 'green';
     }
     else {
-        launchStatus.textContent = 'Shuttle not ready for launch.';
+        faultyItems.style.visibility = 'visible';
         launchStatus.style.color = 'red';
     }
-
-    pilotStatus.innerHTML = document.querySelector('#launchForm > form > div:nth-child(1) > label > input[type=text]').value + ' is ready.';
-    copilotStatus.innerHTML = document.querySelector('#launchForm > form > div:nth-child(2) > label > input[type=text]').value + ' is ready.';
-    faultyItems.style.visibility = 'visible';
+    
 }
 
 function isNotANumber(querySelector) {
