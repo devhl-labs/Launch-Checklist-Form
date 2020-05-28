@@ -65,11 +65,11 @@ function formSubmitted(event) {
     let fuel = Number(document.querySelector('#launchForm > form > div:nth-child(3) > label > input[type = text]').value);
     let cargo = Number(document.querySelector('#launchForm > form > div:nth-child(4) > label > input[type = text]').value);
 
-    if (fuel > minFuel) fuelText =
-        'Fuel level high enough for launch.';
+    if (fuel > minFuel)
+        fuelText = 'Fuel level high enough for launch.';
     
-    if (cargo < maxCargo) cargoText =
-        'Cargo mass low enough for launch.';
+    if (cargo < maxCargo)
+        cargoText = 'Cargo mass low enough for launch.';
 
     if (fuel > minFuel && cargo < maxCargo)
         launchStatusText = 'Shuttle is ready for launch.';
